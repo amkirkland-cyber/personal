@@ -1,1 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Photographs from Adam's corner of the internet.">
+  <title>Photos — Adam Is on the Internet</title>
+  <link rel="stylesheet" href="../branch.css">
+</head>
+<body class="photos-page" data-branch="photos" data-side="right">
+  <!--
+    FUTURE EDITING INSTRUCTIONS — PHOTOS
+    - Add, remove, rename, or reorder albums in BRANCH_PAGE near the bottom.
+    - title is the album label; note is the short description.
+    - kicker works well for a year, place, camera, or film stock.
+    - href is relative to /photos/. Use "london-2026/" for
+      photos/london-2026/index.html.
+    - Keep href: "" for a planned album; it will display without becoming a link.
+    - Put album images in photos/album-name/images/ so each album stays portable.
+    - Before publishing family photographs, decide deliberately whether they
+      belong on the public site. Hidden links are not access control.
+  -->
 
+  <a class="return-sign" href="../" aria-label="Return to Mohawk"><span aria-hidden="true">←</span> Mohawk</a>
+
+  <main class="street-page">
+    <header class="street-heading">
+      <h1 class="street-name">photos</h1>
+      <p class="street-intro">A gallery window arranged like a contact sheet, with albums tucked behind each print.</p>
+    </header>
+
+    <section id="destinationGrid" class="destination-grid" aria-label="Photo collections"></section>
+
+    <footer class="branch-footer">
+      <span>The shelves are ready</span>
+      <button id="shuffleButton" class="shuffle-button" type="button">Random walk</button>
+    </footer>
+  </main>
+
+  <script>
+    const BRANCH_PAGE = {
+      items: [
+        { title: "2026", note: "Recent rolls and everyday frames", kicker: "By year", href: "" },
+        { title: "Trips", note: "Albums organized by place", kicker: "By place", href: "" },
+        { title: "People", note: "Selected family collections", kicker: "Portraits", href: "" },
+        { title: "Film shelf", note: "Cameras, lenses, and film stocks", kicker: "Process", href: "" },
+        { title: "Random walk", note: "A changing handful of photographs", kicker: "Shuffle", href: "" }
+      ]
+    };
+    window.BRANCH_PAGE = BRANCH_PAGE;
+  </script>
+  <script src="../branch.js"></script>
+</body>
+</html>
