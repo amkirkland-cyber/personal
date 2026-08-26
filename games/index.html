@@ -1,2 +1,50 @@
-<h1>Games</h1>
-<p><a href="../">Return to the neighborhood</a></p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Games from Adam's corner of the internet.">
+  <title>Games — Adam Is on the Internet</title>
+  <link rel="stylesheet" href="../branch.css">
+</head>
+<body class="games-page" data-branch="games" data-side="left">
+  <!--
+    FUTURE EDITING INSTRUCTIONS — GAMES
+    - Add, remove, rename, or reorder games in BRANCH_PAGE near the bottom.
+    - title is the large label; note is the short description.
+    - kicker is the small upper label and may be omitted.
+    - href is relative to /games/. Use "example/" for games/example/index.html.
+    - Keep href: "" for a planned item; it will display without acting like a link.
+    - To create a game, make games/example/index.html and its related files.
+    - Do not put private information or secret keys in any browser-delivered file.
+  -->
+
+  <a class="return-sign" href="../" aria-label="Return to Mohawk">Mohawk <span aria-hidden="true">→</span></a>
+
+  <main class="street-page">
+    <header class="street-heading">
+      <h1 class="street-name">games</h1>
+      <p class="street-intro">A small neighborhood arcade: playgrounds, puzzles, experiments, and things worth trying twice.</p>
+    </header>
+
+    <section id="destinationGrid" class="destination-grid" aria-label="Games"></section>
+
+    <footer class="branch-footer">
+      <span>More doors can appear here</span>
+      <button id="shuffleButton" class="shuffle-button" type="button">Choose for me</button>
+    </footer>
+  </main>
+
+  <script>
+    const BRANCH_PAGE = {
+      items: [
+        { title: "Playground", note: "Quick browser games", kicker: "Arcade", href: "" },
+        { title: "Puzzle shed", note: "Puzzles and experiments", kicker: "Workshop", href: "" },
+        { title: "High scores", note: "Family records and friendly rivalries", kicker: "Scoreboard", href: "" }
+      ]
+    };
+    window.BRANCH_PAGE = BRANCH_PAGE;
+  </script>
+  <script src="../branch.js"></script>
+</body>
+</html>
