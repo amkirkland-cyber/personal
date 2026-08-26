@@ -1,0 +1,238 @@
+:root {
+  --brick: #8f3f32;
+  --brick-dark: #54251f;
+  --cream: #f2ead7;
+  --ink: #252724;
+  --sage: #788a71;
+  --sage-dark: #465645;
+  --paper: #e8dcc2;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; margin: 0; }
+
+body {
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: var(--ink) url("neighborhood/mohawk-entrance.webp") center/cover fixed;
+  color: var(--cream);
+  font-family: "Trebuchet MS", "Avenir Next", Avenir, sans-serif;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, rgba(35, 39, 34, .84), rgba(84, 37, 31, .7));
+  content: "";
+  backdrop-filter: blur(7px) saturate(.72);
+}
+
+a { color: inherit; }
+
+button { font: inherit; }
+
+.street-page {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: clamp(4.8rem, 10vw, 7rem) 0 3rem;
+}
+
+.return-sign {
+  position: fixed;
+  top: 1rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .65rem .85rem;
+  border: 2px solid rgba(242, 234, 215, .82);
+  border-radius: .25rem;
+  background: rgba(70, 86, 69, .92);
+  box-shadow: .24rem .3rem 0 rgba(27, 31, 26, .36);
+  color: var(--cream);
+  font-family: Georgia, serif;
+  text-decoration: none;
+  transform: rotate(-1deg);
+}
+
+body[data-side="left"] .return-sign { right: 1rem; }
+body[data-side="right"] .return-sign { left: 1rem; }
+
+.return-sign:hover,
+.return-sign:focus-visible,
+.destination:hover,
+.destination:focus-visible,
+.shuffle-button:hover,
+.shuffle-button:focus-visible {
+  outline: 3px solid var(--cream);
+  outline-offset: 4px;
+  filter: brightness(1.06);
+}
+
+.street-heading {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: end;
+  gap: 1rem 1.4rem;
+  margin-bottom: clamp(1.4rem, 4vw, 2.6rem);
+}
+
+.street-name {
+  margin: 0;
+  padding: .55rem .85rem .65rem;
+  border: 3px solid rgba(242, 234, 215, .9);
+  border-radius: .25rem;
+  background: var(--sage-dark);
+  box-shadow: .32rem .38rem 0 rgba(26, 30, 25, .34);
+  font-family: Georgia, serif;
+  font-size: clamp(2.3rem, 8vw, 5.7rem);
+  font-weight: 400;
+  line-height: .86;
+  text-transform: lowercase;
+  transform: rotate(-1deg);
+}
+
+.street-intro {
+  max-width: 34rem;
+  margin: 0 0 .15rem;
+  color: rgba(242, 234, 215, .8);
+  font-size: clamp(.82rem, 2vw, 1rem);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.destination-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.8rem, 2vw, 1.25rem);
+}
+
+.destination {
+  position: relative;
+  display: flex;
+  min-height: 12rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 1rem;
+  border: 1px solid rgba(242, 234, 215, .42);
+  border-radius: .5rem .5rem .18rem .18rem;
+  background: rgba(59, 65, 56, .84);
+  box-shadow: 0 .75rem 1.8rem rgba(19, 20, 17, .24);
+  color: var(--cream);
+  text-decoration: none;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.destination::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 15%, rgba(24, 25, 22, .58));
+  content: "";
+}
+
+.destination > * { position: relative; }
+
+.destination[href]:hover,
+.destination[href]:focus-visible { transform: translateY(-.24rem); }
+
+.destination.is-empty { cursor: default; opacity: .78; }
+
+.destination-kicker {
+  margin-bottom: auto;
+  align-self: flex-start;
+  padding: .25rem .42rem;
+  border: 1px solid rgba(242, 234, 215, .52);
+  border-radius: 999px;
+  background: rgba(37, 39, 36, .48);
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.destination h2 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.destination p {
+  margin: .45rem 0 0;
+  color: rgba(242, 234, 215, .72);
+  font-size: .82rem;
+}
+
+.games-page .destination:nth-child(3n + 1) { background-color: rgba(84, 37, 31, .88); }
+.games-page .destination:nth-child(3n + 2) { background-color: rgba(70, 86, 69, .9); }
+.games-page .destination:nth-child(3n) { background-color: rgba(86, 69, 42, .88); }
+
+.photos-page .destination {
+  min-height: 15rem;
+  border: .48rem solid var(--paper);
+  border-bottom-width: 2.4rem;
+  border-radius: .12rem;
+  background-color: rgba(64, 62, 54, .9);
+  box-shadow: .15rem .32rem .75rem rgba(19, 20, 17, .28);
+}
+
+.photos-page .destination:nth-child(even) { transform: rotate(.7deg); }
+.photos-page .destination:nth-child(odd) { transform: rotate(-.55deg); }
+.photos-page .destination[href]:hover,
+.photos-page .destination[href]:focus-visible { transform: rotate(0) translateY(-.24rem); }
+
+.other-page .destination {
+  min-height: 11rem;
+  border: 0;
+  border-radius: .08rem;
+  background: rgba(232, 220, 194, .94);
+  box-shadow: .14rem .25rem .65rem rgba(24, 23, 19, .28);
+  color: var(--ink);
+  transform: rotate(-.5deg);
+}
+
+.other-page .destination:nth-child(even) { transform: rotate(.65deg); }
+.other-page .destination::before { background: linear-gradient(180deg, transparent, rgba(143, 63, 50, .08)); }
+.other-page .destination p { color: rgba(37, 39, 36, .68); }
+.other-page .destination-kicker { border-color: rgba(37, 39, 36, .32); background: transparent; }
+
+.branch-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  color: rgba(242, 234, 215, .62);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.shuffle-button {
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-transform: inherit;
+}
+
+.shuffle-button:disabled { cursor: default; opacity: .38; }
+
+@media (max-width: 760px) {
+  .street-heading { grid-template-columns: 1fr; align-items: start; }
+  .destination-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .destination { min-height: 10rem; }
+}
+
+@media (max-width: 460px) {
+  .street-page { width: min(100% - 1.2rem, 1120px); }
+  .destination-grid { grid-template-columns: 1fr; }
+  .street-name { justify-self: start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
