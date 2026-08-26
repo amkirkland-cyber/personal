@@ -1,2 +1,51 @@
-<h1>Other</h1>
-<p><a href="../">Return to the neighborhood</a></p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Projects, notes, and curiosities from Adam's corner of the internet.">
+  <title>Other — Adam Is on the Internet</title>
+  <link rel="stylesheet" href="../branch.css">
+</head>
+<body class="other-page" data-branch="other" data-side="left">
+  <!--
+    FUTURE EDITING INSTRUCTIONS — OTHER
+    - Treat this page as a neighborhood bulletin board.
+    - Add, remove, rename, or reorder notes in BRANCH_PAGE near the bottom.
+    - title is the main label; note explains what is behind it.
+    - kicker is the category and may be omitted.
+    - href is relative to /other/. It may also be a complete https:// URL.
+    - Keep href: "" for a planned item; it will display without becoming a link.
+    - If one category becomes large, give it a public street of its own instead
+      of letting this page become crowded.
+  -->
+
+  <a class="return-sign" href="../" aria-label="Return to Mohawk">Mohawk <span aria-hidden="true">→</span></a>
+
+  <main class="street-page">
+    <header class="street-heading">
+      <h1 class="street-name">other</h1>
+      <p class="street-intro">A bulletin board for projects, notes, links, and things that have not become their own street yet.</p>
+    </header>
+
+    <section id="destinationGrid" class="destination-grid" aria-label="Other collections"></section>
+
+    <footer class="branch-footer">
+      <span>Things may move to new streets</span>
+      <button id="shuffleButton" class="shuffle-button" type="button">Pick a note</button>
+    </footer>
+  </main>
+
+  <script>
+    const BRANCH_PAGE = {
+      items: [
+        { title: "Workshop", note: "Things I have made", kicker: "Projects", href: "" },
+        { title: "Notebook", note: "Writing, questions, and curiosities", kicker: "Notes", href: "" },
+        { title: "Links", note: "Places elsewhere worth visiting", kicker: "Elsewhere", href: "" }
+      ]
+    };
+    window.BRANCH_PAGE = BRANCH_PAGE;
+  </script>
+  <script src="../branch.js"></script>
+</body>
+</html>
