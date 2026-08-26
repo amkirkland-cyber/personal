@@ -1,0 +1,42 @@
+:root { --brick:#8f3f32; --brick-dark:#54251f; --cream:#f2ead7; --ink:#252724; --sage:#788a71; }
+* { box-sizing: border-box; }
+[hidden] { display:none!important; }
+html,body { width:100%; min-height:100%; margin:0; overflow:hidden; background:var(--ink); color:var(--cream); font-family:"Trebuchet MS","Avenir Next",Avenir,sans-serif; }
+button { font:inherit; }
+.journey { position:relative; min-height:100svh; overflow:hidden; background-color:#777c70; background-position:center; background-size:cover; isolation:isolate; transition:background-image 380ms ease; }
+.scene-wash { position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(18,24,22,.25),transparent 36%),linear-gradient(0deg,rgba(23,23,20,.55),transparent 34%); }
+.site-plaque { position:absolute; top:clamp(1rem,3vw,2rem); left:clamp(1rem,3vw,2rem); display:grid; padding:.62rem .9rem .7rem; border:2px solid rgba(242,234,215,.82); border-radius:.28rem; background:rgba(56,68,55,.9); box-shadow:0 6px 20px rgba(27,24,18,.24); color:var(--cream); text-transform:uppercase; letter-spacing:.12em; line-height:1; transform:rotate(-1deg); backdrop-filter:blur(5px); }
+.site-plaque span { font-size:.55rem; opacity:.8; }
+.site-plaque strong { margin-top:.28rem; font-family:Georgia,serif; font-size:clamp(.92rem,2vw,1.18rem); font-weight:500; letter-spacing:.06em; }
+.block-counter { position:absolute; top:clamp(1.35rem,3vw,2.35rem); left:50%; display:flex; gap:.3rem; transform:translateX(-50%); }
+.block-counter i { width:1.2rem; height:.34rem; border-radius:999px; background:rgba(242,234,215,.36); box-shadow:0 1px 3px rgba(0,0,0,.2); }
+.block-counter i.passed { background:var(--cream); }
+.street-sign,.quiet-turn,.back-sign { border:0; color:var(--cream); cursor:pointer; }
+.street-sign { position:absolute; top:42%; z-index:3; display:flex; align-items:center; gap:.72rem; min-width:clamp(10rem,18vw,15rem); padding:.78rem 1rem; border:3px solid rgba(242,234,215,.88); border-radius:.25rem; background:#556953; box-shadow:.34rem .42rem 0 rgba(42,47,39,.38); font-family:Georgia,serif; font-size:clamp(1.45rem,4vw,3.15rem); line-height:1; letter-spacing:.04em; text-transform:lowercase; transition:transform 160ms ease,filter 160ms ease; }
+.street-sign:hover,.street-sign:focus-visible { filter:brightness(1.08); outline:3px solid var(--cream); outline-offset:4px; }
+.street-sign-left { left:0; justify-content:flex-end; border-left:0; transform:rotate(-1.4deg); }
+.street-sign-left:hover,.street-sign-left:focus-visible { transform:rotate(-1.4deg) translateX(.4rem); }
+.street-sign-right { right:0; flex-direction:row-reverse; justify-content:flex-end; border-right:0; transform:rotate(1.4deg); }
+.street-sign-right:hover,.street-sign-right:focus-visible { transform:rotate(1.4deg) translateX(-.4rem); }
+.quiet-turn { position:absolute; top:46%; z-index:4; width:clamp(4.5rem,8vw,6.5rem); height:clamp(4.5rem,8vw,6.5rem); border:2px solid rgba(242,234,215,.72); border-radius:50%; background:rgba(50,60,48,.68); box-shadow:0 8px 24px rgba(18,19,16,.2); font-size:clamp(2.4rem,5vw,4rem); backdrop-filter:blur(7px); transition:transform 180ms ease,background 180ms ease; }
+.quiet-turn:hover,.quiet-turn:focus-visible { background:rgba(67,82,64,.9); outline:3px solid var(--cream); outline-offset:4px; transform:scale(1.06); }
+.quiet-turn-left { left:clamp(1rem,8vw,7rem); }
+.quiet-turn-right { right:clamp(1rem,8vw,7rem); }
+.travel-controls { position:absolute; bottom:clamp(1.3rem,4vw,2.6rem); left:50%; z-index:5; display:flex; gap:.85rem; transform:translateX(-50%); }
+.travel-controls button { display:grid; width:clamp(3.5rem,7vw,5.25rem); height:clamp(3.5rem,7vw,5.25rem); place-items:center; border:2px solid rgba(242,234,215,.78); border-radius:50%; background:rgba(38,40,35,.7); box-shadow:0 8px 30px rgba(0,0,0,.22); color:var(--cream); cursor:pointer; font-size:clamp(1.8rem,4vw,2.8rem); backdrop-filter:blur(8px); transition:transform 150ms ease,background 150ms ease; }
+.travel-controls button:hover,.travel-controls button:focus-visible { background:rgba(83,99,79,.92); outline:3px solid var(--cream); outline-offset:4px; transform:translateY(-.18rem); }
+.travel-controls button:disabled { cursor:default; opacity:.25; transform:none; }
+.tiny-help { position:absolute; right:1rem; bottom:.8rem; margin:0; color:rgba(242,234,215,.74); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; }
+.house-door { position:absolute; top:35%; left:50%; z-index:4; width:clamp(4.5rem,10vw,8rem); height:clamp(9rem,28vh,15rem); border:0; border-radius:.5rem .5rem .12rem .12rem; background:transparent; cursor:pointer; transform:translateX(-50%); }
+.house-door:hover,.house-door:focus-visible { outline:3px solid rgba(242,234,215,.9); outline-offset:7px; background:rgba(242,234,215,.07); }
+.door-message { position:absolute; top:calc(35% + min(29vh,16rem)); left:50%; margin:0; padding:.55rem .8rem; border-radius:.3rem; background:rgba(35,35,31,.82); box-shadow:0 6px 18px rgba(0,0,0,.25); color:var(--cream); font-family:Georgia,serif; font-size:.9rem; transform:translateX(-50%); }
+.branch-page { position:relative; display:grid; min-height:100svh; place-content:center; overflow:hidden; background:linear-gradient(115deg,rgba(71,89,70,.95),rgba(83,45,37,.93)),url("neighborhood/mohawk-entrance.webp") center/cover; color:var(--cream); text-align:center; }
+.branch-page::before { position:absolute; inset:-12%; background:inherit; content:""; filter:blur(18px) saturate(.7); transform:scale(1.08); }
+.branch-page h1,.branch-page p,.back-sign { position:relative; z-index:2; }
+.branch-page h1 { margin:0; font-family:Georgia,serif; font-size:clamp(4.5rem,18vw,12rem); font-weight:400; line-height:.9; text-transform:lowercase; text-shadow:0 4px 18px rgba(0,0,0,.18); }
+.branch-page p { margin:1.1rem 0 0; opacity:.72; font-size:.9rem; letter-spacing:.1em; text-transform:uppercase; }
+.back-sign { position:fixed; top:1.2rem; width:4rem; height:4rem; border:2px solid rgba(242,234,215,.8); border-radius:50%; background:rgba(37,39,36,.58); font-size:2.2rem; backdrop-filter:blur(7px); }
+.branch-page[data-side="left"] .back-sign { right:1.2rem; }
+.branch-page[data-side="right"] .back-sign { left:1.2rem; }
+@media (max-width:640px) { .journey{background-position:center center}.block-counter{top:auto;bottom:.7rem}.block-counter i{width:.65rem;height:.22rem}.street-sign{top:44%;min-width:9.2rem;font-size:1.65rem}.tiny-help{display:none}.house-door{top:32%;width:22vw;height:30vh} }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important} }

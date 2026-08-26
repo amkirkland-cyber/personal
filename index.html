@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#252724">
+  <meta name="description" content="Take a walk through Adam's corner of the internet.">
+  <title>Adam Is on the Internet</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <!--
+    ================================================================
+    FUTURE CHATGPT / CODEX EDITING INSTRUCTIONS
+    ================================================================
+
+    PURPOSE
+    This is Adam's personal site, presented as a journey south through a
+    German Village-inspired neighborhood. Keep it playful and spatial. Do not
+    replace it with a conventional navbar, hero, or portfolio grid unless Adam
+    explicitly requests that change.
+
+    TO ADD A PUBLIC MENU
+    1. Find SITE_CONFIG in the script at the bottom of this file.
+    2. Add one object to branches using this form:
+       { id: "example", label: "Example", stop: 3, side: "right" }
+    3. Use the next unused stop in this order: 3, 5, 6. If all are used, add a
+       stop before 7 and increase mainStops and privateRouteStop by one.
+    4. A branch with only id/label/stop/side opens a placeholder destination.
+       To link elsewhere, add url: "https://..." or url: "example.html".
+
+    ROUTE RULES
+    - The public journey starts at Livingston and travels south on Mohawk.
+    - Stops internally represent Blenkner, Jackson, Berger Alley, Beck, Willow,
+      Lear, and Sycamore. Never display those real street names on the signs.
+    - At the last stop the unlabeled route turns left at Sycamore, right at
+      Macon, then left at Alexander and ends at the house.
+    - Keep the house route deeper than public branches and keep every control
+      along it unlabeled.
+
+    SECURITY RULE
+    Never put a password, password hash, private data, private files, or a fake
+    JavaScript delay gate in this public repository. Static-site code can be
+    downloaded and altered. Protect a separate hostname such as
+    home.adamisontheinternet.com with Cloudflare Access and one-time email
+    codes, then set houseDestination below to that protected URL. Leave it
+    blank until real protection exists.
+
+    FILES
+    Keep index.html, site.css, and the neighborhood folder together. The three
+    .webp backgrounds are intentionally separate so normal menu updates only
+    require replacing index.html.
+    ================================================================
+  -->
+
+  <main id="journey" class="journey" aria-live="polite">
+    <div class="scene-wash"></div>
+    <header class="site-plaque" aria-label="Adam Is on the Internet">
+      <span>Adam is on</span><strong>the Internet</strong>
+    </header>
+
+    <div id="blockCounter" class="block-counter"></div>
+    <button id="streetSign" class="street-sign" hidden></button>
+    <button id="quietTurn" class="quiet-turn" hidden></button>
+    <button id="houseDoor" class="house-door" aria-label="Open the unlabeled house door" hidden></button>
+    <p id="doorMessage" class="door-message" hidden>Not every door is public.</p>
+
+    <nav class="travel-controls" aria-label="Travel through the neighborhood">
+      <button id="backButton" aria-label="Go back one block"><span aria-hidden="true">↓</span></button>
+      <button id="forwardButton" aria-label="Travel forward one block"><span aria-hidden="true">↑</span></button>
+    </nav>
+    <p class="tiny-help">arrow keys work too</p>
+  </main>
+
+  <main id="branchPage" class="branch-page" hidden>
+    <button id="branchBack" class="back-sign" aria-label="Return to the main street">←</button>
+    <h1 id="branchTitle"></h1>
+    <p>Coming down this street soon.</p>
+  </main>
+
+  <script>
+    const SITE_CONFIG = {
+      mainStops: 8,
+      privateRouteStop: 7,
+      houseDestination: "",
+      branches: [
+        { id: "games", label: "Games", stop: 1, side: "left" },
+        { id: "photos", label: "Photos", stop: 2, side: "right" },
+        { id: "other", label: "Other", stop: 4, side: "left" }
+      ]
+    };
+
+    const routeOrder = ["main", "sycamore", "macon", "alexander", "house"];
+    const routeTurns = { sycamore: "right", macon: "left", alexander: "left" };
+    const backgrounds = {
+      main: "neighborhood/mohawk-entrance.webp",
+      route: "neighborhood/residential-turn.webp",
+      house: "neighborhood/house-approach.webp"
+    };
+
+    let stop = 0;
+    let scene = "main";
+    let openBranch = null;
+
+    const journey = document.getElementById("journey");
+    const branchPage = document.getElementById("branchPage");
+    const blockCounter = document.getElementById("blockCounter");
+    const streetSign = document.getElementById("streetSign");
+    const quietTurn = document.getElementById("quietTurn");
+    const houseDoor = document.getElementById("houseDoor");
+    const doorMessage = document.getElementById("doorMessage");
+    const backButton = document.getElementById("backButton");
+    const forwardButton = document.getElementById("forwardButton");
+    const branchBack = document.getElementById("branchBack");
+    const branchTitle = document.getElementById("branchTitle");
+
+    function branchAtCurrentStop() {
+      return SITE_CONFIG.branches.find(branch => branch.stop === stop) || null;
+    }
+
+    function setBackground() {
+      const file = scene === "main" ? backgrounds.main : scene === "house" ? backgrounds.house : backgrounds.route;
+      journey.style.backgroundImage = `url("${file}")`;
+    }
+
+    function renderCounter() {
+      blockCounter.replaceChildren();
+      blockCounter.hidden = scene !== "main";
+      if (scene !== "main") return;
+      for (let index = 0; index < SITE_CONFIG.mainStops; index += 1) {
+        const marker = document.createElement("i");
+        if (index <= stop) marker.className = "passed";
+        blockCounter.append(marker);
+      }
+      blockCounter.setAttribute("aria-label", `Block ${stop + 1} of ${SITE_CONFIG.mainStops}`);
+    }
+
+    function renderStreetSign() {
+      const branch = scene === "main" ? branchAtCurrentStop() : null;
+      streetSign.hidden = !branch;
+      if (!branch) return;
+      streetSign.className = `street-sign street-sign-${branch.side}`;
+      streetSign.innerHTML = branch.side === "left"
+        ? `<span>${branch.label}</span><b aria-hidden="true">←</b>`
+        : `<b aria-hidden="true">→</b><span>${branch.label}</span>`;
+      streetSign.setAttribute("aria-label", `Turn ${branch.side} for ${branch.label}`);
+      streetSign.onclick = () => enterBranch(branch);
+    }
+
+    function renderQuietTurn() {
+      let direction = null;
+      if (scene === "main" && stop === SITE_CONFIG.privateRouteStop) direction = "left";
+      else if (routeTurns[scene]) direction = routeTurns[scene];
+      quietTurn.hidden = !direction;
+      if (!direction) return;
+      quietTurn.className = `quiet-turn quiet-turn-${direction}`;
+      quietTurn.innerHTML = `<span aria-hidden="true">${direction === "left" ? "←" : "→"}</span>`;
+      quietTurn.setAttribute("aria-label", `Take the unlabeled ${direction} turn`);
+      quietTurn.onclick = moveForward;
+    }
+
+    function render() {
+      setBackground();
+      renderCounter();
+      renderStreetSign();
+      renderQuietTurn();
+      houseDoor.hidden = scene !== "house";
+      doorMessage.hidden = true;
+      backButton.disabled = scene === "main" && stop === 0;
+      forwardButton.hidden = scene === "house" || (scene === "main" && stop === SITE_CONFIG.privateRouteStop);
+    }
+
+    function moveForward() {
+      doorMessage.hidden = true;
+      if (scene === "main") {
+        if (stop < SITE_CONFIG.privateRouteStop) stop += 1;
+        else scene = "sycamore";
+      } else {
+        const index = routeOrder.indexOf(scene);
+        if (index < routeOrder.length - 1) scene = routeOrder[index + 1];
+      }
+      render();
+    }
+
+    function moveBack() {
+      doorMessage.hidden = true;
+      if (scene === "main") {
+        if (stop > 0) stop -= 1;
+      } else {
+        const index = routeOrder.indexOf(scene);
+        scene = routeOrder[Math.max(0, index - 1)];
+      }
+      render();
+    }
+
+    function enterBranch(branch) {
+      if (branch.url) {
+        window.location.assign(branch.url);
+        return;
+      }
+      openBranch = branch;
+      journey.hidden = true;
+      branchPage.hidden = false;
+      branchPage.dataset.side = branch.side;
+      branchTitle.textContent = branch.label;
+      branchBack.textContent = branch.side === "left" ? "→" : "←";
+      history.replaceState(null, "", `#${branch.id}`);
+    }
+
+    function leaveBranch() {
+      openBranch = null;
+      branchPage.hidden = true;
+      journey.hidden = false;
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+
+    backButton.addEventListener("click", moveBack);
+    forwardButton.addEventListener("click", moveForward);
+    branchBack.addEventListener("click", leaveBranch);
+    houseDoor.addEventListener("click", () => {
+      if (SITE_CONFIG.houseDestination) window.location.assign(SITE_CONFIG.houseDestination);
+      else doorMessage.hidden = false;
+    });
+
+    document.addEventListener("keydown", event => {
+      if (openBranch) {
+        if (event.key === "Escape" || event.key === "ArrowDown") leaveBranch();
+        return;
+      }
+      if (event.key === "ArrowUp") moveForward();
+      if (event.key === "ArrowDown") moveBack();
+      if (event.key === "ArrowLeft" && scene === "main" && stop === SITE_CONFIG.privateRouteStop) moveForward();
+      if (event.key === "Enter" && branchAtCurrentStop()) enterBranch(branchAtCurrentStop());
+    });
+
+    const initialBranch = SITE_CONFIG.branches.find(branch => `#${branch.id}` === location.hash);
+    render();
+    if (initialBranch) enterBranch(initialBranch);
+  </script>
+</body>
+</html>
